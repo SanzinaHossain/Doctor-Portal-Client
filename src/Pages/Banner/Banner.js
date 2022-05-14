@@ -1,7 +1,9 @@
 import React from 'react'
 import chair from "../../assets/images/chair.png";
+import img from "../../assets/images/bg.png"
 const Banner = () => {
   return (
+    <section style={{backgroundImage:`url(${img})`}}>
     <div class="hero min-h-screen">
   <div class="hero-content flex-col lg:flex-row-reverse">
     <img src={chair} class="lg:max-w-2xl sm:max-w-sm rounded-lg shadow-2xl" />
@@ -12,6 +14,7 @@ const Banner = () => {
     </div>
   </div>
 </div>
+</section>
   )
 }
 

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 const Navbar = () => {
     const menuitems=<>
-        <li class="hover:bg-teal-200 rounded-lg"><Link to="/">Home</Link></li>
+        <li class="hover:bg-teal-200  rounded-lg"><Link to="/">Home</Link></li>
         <li class="hover:bg-teal-200 rounded-lg"><Link to="/appoinment">Appoinment</Link></li>
         <li class="hover:bg-teal-200 rounded-lg"><Link to="/review">Review</Link></li>
         <li class="hover:bg-teal-200 rounded-lg"><Link to="/contact">Contact</Link></li>
@@ -11,8 +11,8 @@ const Navbar = () => {
         <li class="hover:bg-teal-200 rounded-lg"><Link to="/login">Login</Link></li>
     </>
   return (
-        <div class="navbar bg-base-100">
-  <div class="navbar-start">
+        <div class="navbar bg-base-100 navbar-fixed">
+  <div class="lg:navbar-start sm:navbar-center">
     <div class="dropdown">
       <label tabindex="0" class="btn btn-ghost lg:hidden">
         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
@@ -21,9 +21,9 @@ const Navbar = () => {
         {menuitems}
       </ul>
     </div>
-    <a class=" ml-10 text-3xl text-secondary">Doctor's Portal</a>
+    <a class=" text-3xl text-secondary sm-flex">Doctor's Portal</a>
   </div>
-  <div class="ml-12 navbar-center hidden lg:flex">
+  <div class="navbar-end hidden lg:flex sm:none">
     <ul class="menu menu-horizontal p-0">
         {menuitems}
     </ul>

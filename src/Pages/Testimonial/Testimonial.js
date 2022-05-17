@@ -6,7 +6,7 @@ import TestimonialCard from '../TestimonialCard/TestimonialCard'
 import back from "../../assets/icons/quote.svg"
 const Testimonial = () => {
   return (
-    <section class=" mx-12 bg-no-repeat bg-right-top"  style={{backgroundImage:`url(${back})`}}>
+    <section class=" bg-no-repeat bg-right-top"  style={{backgroundImage:`url(${back})`}}>
         <div className="mt-12 lg:mt-16">
         <h1 className='text-center text-primary text-xl'>Testimonial</h1>
     <h1 className="text-center bold text-3xl">What Ours Patients Says</h1>

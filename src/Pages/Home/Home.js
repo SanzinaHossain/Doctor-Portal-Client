@@ -1,6 +1,7 @@
 import React from 'react'
 import Banner from '../Banner/Banner'
 import Exceptional from '../Exceptional/Exceptional'
+import HomeContact from '../HomeContact/HomeContact'
 import Info from '../Info/Info'
 import MakeApoint from '../MakeApoint/MakeApoint'
 import Services from '../Services/Services'
@@ -15,6 +16,7 @@ const Home = () => {
        <Exceptional></Exceptional>
        <MakeApoint></MakeApoint>
        <Testimonial></Testimonial>
+       <HomeContact></HomeContact>
     </div>
   )
 }

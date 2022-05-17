@@ -1,8 +1,11 @@
 import React from 'react'
+import AppointmentBanner from './AppointmentBanner/AppointmentBanner'
 
 const Appoinment = () => {
   return (
-    <div>Appoinment</div>
+    <div>
+      <AppointmentBanner></AppointmentBanner>
+    </div>
   )
 }
 

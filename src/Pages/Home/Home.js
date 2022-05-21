@@ -5,6 +5,7 @@ import HomeContact from '../HomeContact/HomeContact'
 import Info from '../Info/Info'
 import MakeApoint from '../MakeApoint/MakeApoint'
 import Services from '../Services/Services'
+import Footer from '../Shared/Footer/Footer'
 import Testimonial from '../Testimonial/Testimonial'
 
 const Home = () => {
@@ -17,6 +18,7 @@ const Home = () => {
        <MakeApoint></MakeApoint>
        <Testimonial></Testimonial>
        <HomeContact></HomeContact>
+       <Footer></Footer>
     </div>
   )
 }

@@ -1,19 +1,46 @@
-import { hasSelectionSupport } from '@testing-library/user-event/dist/utils';
 import { format } from 'date-fns';
 import React from 'react'
-
-const BookingModal = ({date,treatment,setTreatment}) => {
-    const {name,slots}=treatment;
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { toast } from 'react-toastify';
+import auth from '../../../firebase.init';
+const BookingModal = ({date,treatment,setTreatment,refetch}) => {
+  const [user] = useAuthState(auth);
+    const {name,slots,_id}=treatment;
+    const formatDate=format(date,'PPPP')
     const handlebooking=(event)=>{
       event.preventDefault();
       const slot=event.target.slot.value;
-      const date=event.target.date.value;
-      const treatmentName=event.target.treatmentName.value;
-      const name=event.target.name.value;
-      const email=event.target.email.value;
       const phone=event.target.phone.value;
-      console.log(treatmentName,date,name,email,phone,slot);
-      setTreatment(null);
+      const booking={
+        treatment:_id,
+        treatment:name,
+        date:formatDate,
+        slot,
+        PatientName:user.displayName,
+        PatientEmail:user.email,
+        phone
+
+      }
+      fetch("http://localhost:5000/booking",
+         {
+           method:"POST",
+           headers:{
+             'content-type':'application/json'
+           },
+           body:JSON.stringify(booking)
+         })
+         .then(res=>res.json())
+         .then(data=>{
+           if(data.success)
+            {
+                toast(`Appontment set on ${formatDate} at ${slot}`);
+            }
+            else{
+              toast.error(`You already have an appointment on ${data.booking?.date} at ${data.booking?.slot}`)
+            }
+         })
+         setTreatment(null);
+         refetch();
     }
   return (
      <div>
@@ -22,15 +49,15 @@ const BookingModal = ({date,treatment,setTreatment}) => {
   <div class="modal-box">
   <label for="booking-modal" class=" btn btn-sm btn-circle absolute right-2 top-2">✕</label>
     <form onSubmit={handlebooking} class="grid grid-cols-1 gap-3 justify-items-center mt-2">
-    <input name="date"type="text" value={format(date, 'PP')} class="input input-bordered input-success w-full max-w-xs" />
+    <input name="date"type="text" value={format(date, 'PPPP')} class="input input-bordered input-success w-full max-w-xs" />
     <input name="treatmentName"type="text" value={name} class="input input-bordered input-success w-full max-w-xs" />
     <select name="slot" class="select select-bordered select-success w-full max-w-xs">
     {
         slots.map(s=><option>{s}</option>)
     }
     </select>
-    <input name="name" type="text" placeholder="Your Name" class="input input-bordered input-success w-full max-w-xs" />
-    <input name="email"type="email" placeholder="Email Address" class="input input-bordered input-success w-full max-w-xs" />
+    <input name="name" type="text" value={user?.displayName} class="input input-bordered input-success w-full max-w-xs" />
+    <input name="email"type="email" value={user?.email} class="input input-bordered input-success w-full max-w-xs" />
     <input name="phone"type="text" placeholder="Phone Number" class="input input-bordered input-success w-full max-w-xs" />
     <input type="submit" value="submit" class="bold btn w-full max-w-xs btn-secondary" />
     </form>

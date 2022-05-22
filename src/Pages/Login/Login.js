@@ -1,13 +1,12 @@
 import auth from '../../firebase.init';
-import React from 'react'
-import { useSendPasswordResetEmail, useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
+import React, { useEffect } from 'react'
+import { useSignInWithEmailAndPassword, useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import { useForm } from "react-hook-form";
 import Loading from "../../Pages/Shared/Loading/Loading"
 import { Link, useLocation, useNavigate } from 'react-router-dom';
+import useToken from '../../Hooks/useToken';
 const Login = () => {
-  const navigate=useNavigate();
-  const location=useLocation();
-  let from=location.state?.from?.pathname || "/";
+ 
   //Google Login
   const [
     signInWithGoogle, 
@@ -26,6 +25,15 @@ const Login = () => {
       loading,
       error,
     ] = useSignInWithEmailAndPassword(auth);
+    const[token]=useToken(user||guser)
+    const navigate=useNavigate();
+    const location=useLocation();
+    let from=location.state?.from?.pathname || "/";
+    useEffect(()=>{
+      if(token){
+        navigate(from,{replace:true});
+      }
+  },[token,from,navigate])
     let signInError;
 
     if (gerror || error) {
@@ -37,9 +45,6 @@ const Login = () => {
       return <Loading></Loading>
     }
 
-    if (guser || user) {
-      navigate(from,{replace:true});
-    }
   return (
     <div class="flex justify-center items-center mt-7">
       <div class="card w-96 bg-base-100 shadow-2xl">

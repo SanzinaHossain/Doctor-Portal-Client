@@ -1,9 +1,10 @@
 import auth from '../../firebase.init';
 import React from 'react'
-import { useCreateUserWithEmailAndPassword, useUpdateProfile} from 'react-firebase-hooks/auth';
+import { useCreateUserWithEmailAndPassword, useSignInWithGoogle, useUpdateProfile} from 'react-firebase-hooks/auth';
 import { useForm } from "react-hook-form";
 import Loading from "../../Pages/Shared/Loading/Loading"
 import { Link, useNavigate } from 'react-router-dom';
+import useToken from '../../Hooks/useToken';
 
 const Signup = () => {
      const navigate=useNavigate();
@@ -12,28 +13,34 @@ const Signup = () => {
     const onSubmit = async data => {
       await createUserWithEmailAndPassword(data.email, data.password);
       await updateProfile({ displayName: data.name });
-      console.log('update done');
   }
     const [
         createUserWithEmailAndPassword,
         user,
         loading,
         error,
-      ] = useCreateUserWithEmailAndPassword(auth,{sendEmailVerification: true});
+      ] = useCreateUserWithEmailAndPassword(auth)
+      const [
+        signInWithGoogle, 
+        guser, 
+        gloading, 
+        gerror] = useSignInWithGoogle(auth);
+      //{sendEmailVerification: true});
       const [updateProfile, updating, upError] = useUpdateProfile(auth);
+      const[token]=useToken(user ||guser);
     let signInError;
 
-    if ( error || upError) {
+    if ( error || upError ||gerror) {
       signInError=<p className='text-red-700 bold'>{error?.message || upError?.message}</p>
     }
 
-    if(loading || updating)
+    if(loading || updating ||gloading)
     {
       return <Loading></Loading>
     }
-    if(user)
+    if(token)
     {
-       navigate('/')
+      navigate('/appoinment');
     }
   return (
     <div class="flex justify-center items-center mt-7">
@@ -110,6 +117,8 @@ const Signup = () => {
       </div>
     </form>
     <p class="text-center">Already Have an Account? <Link class="text-secondary" to="/login">Login</Link></p>
+    <div class="divider">OR</div>
+    <button onClick={() =>signInWithGoogle()}class="btn btn-outline">Connect With Google</button>
   </div>
 </div>
     </div>

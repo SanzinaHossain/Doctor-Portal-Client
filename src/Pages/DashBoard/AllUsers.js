@@ -1,22 +1,30 @@
 import React, { useEffect, useState } from 'react'
-import { useQuery } from 'react-query'
-import Loading from '../Shared/Loading/Loading'
-
+import Singleuser from './Singleuser'
+import Loading from "../Shared/Loading/Loading"
+import { useQuery } from 'react-query';
 const AllUsers = () => {
-     const [users,setUsers]=useState([])
-     useEffect(()=>{
-        fetch('http://localhost:5000/users',{
-            method:'GET',
-            headers:{
-                authorization:`Bearer ${localStorage.getItem('accessToken')}`
-            }
-        })
-         .then(res=>res.json())
-         .then(data=>{
-             console.log(data)
-            setUsers(data);
-        })
-     },[])
+    //  const [users,setUsers]=useState([])
+    //  useEffect(()=>{
+    //     fetch('http://localhost:5000/users',{
+    //         method:'GET',
+    //         headers:{
+    //             authorization:`Bearer ${localStorage.getItem('accessToken')}`
+    //         }
+    //     })
+    //      .then(res=>res.json())
+    //      .then(data=>{
+    //         setUsers(data);
+    //     })
+    //  },[])
+    const { data: users, isLoading, refetch } = useQuery('users', () => fetch('http://localhost:5000/users', {
+      method: 'GET',
+      headers:{
+          authorization: `Bearer ${localStorage.getItem('accessToken')}`
+      }
+  }).then(res => res.json()));
+  if (isLoading) {
+      return <Loading></Loading>
+  }
     
   return (
     <div className='mt-5'>
@@ -25,7 +33,6 @@ const AllUsers = () => {
   <table class="table w-full">
     <thead>
       <tr>
-        <th></th>
         <th>Name</th>
         <th>Make Admin</th>
         <th>Delete User</th>
@@ -33,13 +40,11 @@ const AllUsers = () => {
     </thead>
     <tbody>
       {
-          users.map((u,index)=>
-            <tr>
-        <th>{index+1}</th>
-        <td>{u.email}</td>
-        <td><button class="btn btn-sm">Make Admin</button></td>
-        <td><button class="btn btn-sm">Delete</button></td>
-      </tr>
+          users.map(u=>
+          <Singleuser
+              u={u}
+              refetch={refetch}
+          ></Singleuser>
             )
       }
     </tbody>
